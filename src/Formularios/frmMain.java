@@ -418,6 +418,22 @@ public class frmMain extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnVerificarActionPerformed
+    
+        private void btnSimplificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
+            String [] transiciones = new String[nroEstados*2];
+            for(int i = 0; i < siguiente0.lenght; i++){
+                transiciones[i] = siguiente0[i];
+            }
+            for(int i = nroEstados; i < transiciones.lenght; i++){
+                transiciones[i] = siguiente1[i];
+            }
+            arreglo.clear();
+            arreglo = eliminaExtraños(arreglo, transiciones);
+            for(int i = 0; i < arreglo.size; i++){
+                
+            }
+            
+        }//GEN-LAST:event_btnRestaurarActionPerformed
 
     /**
      * @param args the command line arguments
