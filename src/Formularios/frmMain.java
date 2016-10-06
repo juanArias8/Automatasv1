@@ -6,6 +6,7 @@
 package Formularios;
 
 import automatas.AFD;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -21,6 +22,7 @@ public class frmMain extends javax.swing.JFrame {
      */
     public frmMain() {
         initComponents();
+        getContentPane().setBackground(Color.LIGHT_GRAY); 
         jTable1.setEnabled(false);
         btnGuardar.setEnabled(false);
         btnSimplificar.setEnabled(false);
@@ -79,7 +81,9 @@ public class frmMain extends javax.swing.JFrame {
         setTitle("AUTÓMATAS FINITOS");
         setResizable(false);
 
+        jPanel1.setBackground(new java.awt.Color(127, 126, 127));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setForeground(new java.awt.Color(152, 189, 189));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -99,7 +103,7 @@ public class frmMain extends javax.swing.JFrame {
 
         jLabel1.setText("TABLA DE TRANSICIONES");
 
-        btnCrear.setFont(new java.awt.Font("Utsaah", 0, 14)); // NOI18N
+        btnCrear.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnCrear.setText("CREAR TABLA ");
         btnCrear.setPreferredSize(new java.awt.Dimension(130, 40));
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +112,7 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
 
-        btnGuardar.setFont(new java.awt.Font("Utsaah", 0, 14)); // NOI18N
+        btnGuardar.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnGuardar.setText("GUARDAR TABLA");
         btnGuardar.setPreferredSize(new java.awt.Dimension(130, 40));
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -117,15 +121,20 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
 
-        btnSimplificar.setFont(new java.awt.Font("Utsaah", 0, 14)); // NOI18N
+        btnSimplificar.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnSimplificar.setText("SIMPLIFICAR AF");
         btnSimplificar.setPreferredSize(new java.awt.Dimension(130, 40));
 
-        btnVerificar.setFont(new java.awt.Font("Utsaah", 0, 14)); // NOI18N
+        btnVerificar.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnVerificar.setText("VERIFICAR CADENA");
         btnVerificar.setPreferredSize(new java.awt.Dimension(130, 40));
+        btnVerificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerificarActionPerformed(evt);
+            }
+        });
 
-        btnRestaurar.setFont(new java.awt.Font("Utsaah", 0, 14)); // NOI18N
+        btnRestaurar.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnRestaurar.setText("REESTAURAR VALORES");
         btnRestaurar.setPreferredSize(new java.awt.Dimension(130, 40));
         btnRestaurar.addActionListener(new java.awt.event.ActionListener() {
@@ -141,7 +150,7 @@ public class frmMain extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnRestaurar, javax.swing.GroupLayout.PREFERRED_SIZE, 153, Short.MAX_VALUE)
+                    .addComponent(btnRestaurar, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                     .addComponent(btnCrear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSimplificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnVerificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -151,23 +160,20 @@ public class frmMain extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(22, 22, 22))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(168, 168, 168))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(182, 182, 182))))
+                        .addGap(184, 184, 184))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(169, 169, 169))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(7, 7, 7)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnCrear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -175,14 +181,21 @@ public class frmMain extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnRestaurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnRestaurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(new java.awt.Color(127, 126, 127));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setMargin(new java.awt.Insets(8, 8, 8, 8));
         jScrollPane2.setViewportView(jTextArea1);
 
         jLabel2.setText("DESCRIPCIÓN DEL AUTÓMATA");
@@ -202,14 +215,15 @@ public class frmMain extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
+        btnHelp.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnHelp.setText("Ayuda");
         btnHelp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,10 +231,13 @@ public class frmMain extends javax.swing.JFrame {
             }
         });
 
+        jPanel3.setBackground(new java.awt.Color(127, 126, 127));
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jTextArea2.setEditable(false);
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
+        jTextArea2.setMargin(new java.awt.Insets(8, 8, 8, 8));
         jScrollPane3.setViewportView(jTextArea2);
 
         jLabel3.setText("RESULTADO DE EVALUAR LA CADENA");
@@ -271,7 +288,7 @@ public class frmMain extends javax.swing.JFrame {
                 .addComponent(btnHelp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -283,7 +300,7 @@ public class frmMain extends javax.swing.JFrame {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         try {
-            nroEstados = Integer.parseInt(JOptionPane.showInputDialog(rootPane, "Ingrese el número de estaos:", "NÚMERO DE ESTADOS", JOptionPane.QUESTION_MESSAGE));
+            nroEstados = Integer.parseInt(JOptionPane.showInputDialog(rootPane, "Ingrese el número de estados:", "NÚMERO DE ESTADOS", JOptionPane.QUESTION_MESSAGE));
             matriz = new String[nroEstados][4];
             jTable1.setEnabled(true);
             jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -324,9 +341,11 @@ public class frmMain extends javax.swing.JFrame {
                 arreglo.add(estado);
                 jTextArea1.setText(automata.mostrar(arreglo, datos));
             }
+            btnGuardar.setEnabled(false);
         } else {
             JOptionPane.showMessageDialog(rootPane, "Debe revisar los datos ingresados", "ERROR", JOptionPane.INFORMATION_MESSAGE);
         }
+        btnVerificar.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpActionPerformed
@@ -367,6 +386,38 @@ public class frmMain extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Error " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRestaurarActionPerformed
+
+    private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
+        try {
+            String cadena = "";
+            cadena = JOptionPane.showInputDialog(rootPane, "Ingrese la cadena a validar: ", "CADENA A VALIDAR", JOptionPane.QUESTION_MESSAGE);
+            String[] vectorCadena = new String[cadena.length()];
+            for (int i = 0; i < vectorCadena.length; i++) {
+                vectorCadena[i] = String.valueOf(cadena.charAt(i));
+            }
+            for (int i = 0; i < vectorCadena.length; i++) {
+                if (!(vectorCadena[i].equals("0")) && !(vectorCadena[i].equals("1"))) {
+                    JOptionPane.showMessageDialog(rootPane, "La cadena sólo debe contener 0s o 1s\n"
+                            + "Error en la posición: " + i, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            Object[] retorno = automata.validarCadena(arreglo, vectorCadena);
+            int k = Integer.parseInt(retorno[0].toString());
+            if (k == 1) {
+                jTextArea2.setText("Hilera a evaluar: " + cadena + "\n\n"
+                        + "\n"+retorno[1]);
+                JOptionPane.showMessageDialog(rootPane, "Cadena aceptada", "ACEPTA", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                jTextArea2.setText("Hilera a evaluar: " + cadena + "\n\n"
+                        + "\n"+retorno[1]);
+                JOptionPane.showMessageDialog(rootPane, "Cadena rechazada", "RECHAZA", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Error en: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnVerificarActionPerformed
 
     /**
      * @param args the command line arguments

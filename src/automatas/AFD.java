@@ -7,6 +7,7 @@ package automatas;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -30,10 +31,10 @@ public class AFD {
 
     public String mostrar(ArrayList<Estado> arreglo, String datos) {
         for (int i = 0; i < arreglo.size(); i++) {
-            datos = datos + "Estado: " + arreglo.get(i).getNombre();
-            datos = datos + "\nSiguiente con 0: " + arreglo.get(i).getSiguiente0();
-            datos = datos + "\nSiguiente con 1: " + arreglo.get(i).getSiguiente1();
-            datos = datos + "\nValida: " + arreglo.get(i).getValida() + "\n\n";
+            datos = datos + "Estado: --------------- " + arreglo.get(i).getNombre();
+            datos = datos + "\nSiguiente con 0: --- " + arreglo.get(i).getSiguiente0();
+            datos = datos + "\nSiguiente con 1: --- " + arreglo.get(i).getSiguiente1();
+            datos = datos + "\nValida: ---------------- " + arreglo.get(i).getValida() + "\n\n";
         }
         return datos;
     }
@@ -76,6 +77,55 @@ public class AFD {
             }
         }
         return acepta;
+    }
+
+    public Estado avanceEstado(ArrayList<Estado> arreglo, String estado) {
+        Estado siguiente;
+        int i = 0;
+        while (!(arreglo.get(i).getNombre().equalsIgnoreCase(estado))) {
+            i++;
+        }
+        siguiente = arreglo.get(i);
+        return siguiente;
+    }
+
+    public Object[] validarCadena(ArrayList<Estado> arreglo, String[] vector) {
+        Object[] retorno = new Object[2];
+        String recorrido = "";
+        int valida = 0;
+        String siguienteEstado = "";
+        Estado estadoActual = arreglo.get(0);
+        recorrido = "Estado inicial ==> " + estadoActual.getNombre();
+        for (int i = 0; i < vector.length; i++) {
+            if (vector[i].equals("0")) {
+                siguienteEstado = estadoActual.getSiguiente0();
+                recorrido = recorrido + " ----- Entra un 0 ";
+            } else {
+                siguienteEstado = estadoActual.getSiguiente1();
+                recorrido = recorrido + " ----- Entra un 1 ";
+            }
+            estadoActual = avanceEstado(arreglo, siguienteEstado);
+            recorrido = recorrido + "\nCambia al estado " + estadoActual.getNombre();
+        }
+        int i = estadoActual.getValida();
+        if (i == 1) {
+            valida = 1;   
+             recorrido = recorrido + " ----- Cadena aceptada";
+        }else{
+            valida = 0;
+            recorrido = recorrido + " ----- Cadena rechazada";
+        }
+        retorno[0] = valida;
+        retorno[1] = recorrido;
+        return retorno;
+    }
+    
+    public void eliminaExtraños(){
+        
+    }
+    
+    public void simplificaEquivalentes(){
+        
     }
 
 }

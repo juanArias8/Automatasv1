@@ -5,10 +5,17 @@
  */
 package automatas;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author estudiantelis
  */
 public class AFND {
+    ArrayList<Estado> automata = new ArrayList<Estado>();
+    String[][] matriz;
     
+    public void convierteDeterministico(String [][] matriz){
+        
+    }
 }
