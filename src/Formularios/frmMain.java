@@ -22,7 +22,7 @@ public class frmMain extends javax.swing.JFrame {
      */
     public frmMain() {
         initComponents();
-        getContentPane().setBackground(Color.LIGHT_GRAY); 
+        getContentPane().setBackground(Color.LIGHT_GRAY);
         jTable1.setEnabled(false);
         btnGuardar.setEnabled(false);
         btnSimplificar.setEnabled(false);
@@ -124,6 +124,11 @@ public class frmMain extends javax.swing.JFrame {
         btnSimplificar.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnSimplificar.setText("SIMPLIFICAR AF");
         btnSimplificar.setPreferredSize(new java.awt.Dimension(130, 40));
+        btnSimplificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimplificarActionPerformed(evt);
+            }
+        });
 
         btnVerificar.setFont(new java.awt.Font("Utsaah", 1, 14)); // NOI18N
         btnVerificar.setText("VERIFICAR CADENA");
@@ -346,6 +351,7 @@ public class frmMain extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Debe revisar los datos ingresados", "ERROR", JOptionPane.INFORMATION_MESSAGE);
         }
         btnVerificar.setEnabled(true);
+        btnSimplificar.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpActionPerformed
@@ -406,11 +412,11 @@ public class frmMain extends javax.swing.JFrame {
             int k = Integer.parseInt(retorno[0].toString());
             if (k == 1) {
                 jTextArea2.setText("Hilera a evaluar: " + cadena + "\n\n"
-                        + "\n"+retorno[1]);
+                        + "\n" + retorno[1]);
                 JOptionPane.showMessageDialog(rootPane, "Cadena aceptada", "ACEPTA", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 jTextArea2.setText("Hilera a evaluar: " + cadena + "\n\n"
-                        + "\n"+retorno[1]);
+                        + "\n" + retorno[1]);
                 JOptionPane.showMessageDialog(rootPane, "Cadena rechazada", "RECHAZA", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (NumberFormatException e) {
@@ -418,22 +424,34 @@ public class frmMain extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnVerificarActionPerformed
-    
-        private void btnSimplificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
-            String [] transiciones = new String[nroEstados*2];
-            for(int i = 0; i < siguiente0.lenght; i++){
-                transiciones[i] = siguiente0[i];
-            }
-            for(int i = nroEstados; i < transiciones.lenght; i++){
-                transiciones[i] = siguiente1[i];
-            }
-            arreglo.clear();
-            arreglo = eliminaExtraños(arreglo, transiciones);
-            for(int i = 0; i < arreglo.size; i++){
-                
-            }
-            
-        }//GEN-LAST:event_btnRestaurarActionPerformed
+
+    private void btnSimplificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimplificarActionPerformed
+        System.out.println(nombres.length);
+        System.out.println(arreglo.size());
+        System.out.println(nroEstados);
+        String[] transiciones = new String[nroEstados * 2];
+        for (int i = 0; i < transiciones.length; i++) {
+            System.out.println(i);
+        }
+        int i;
+        for (i = 0; i < siguiente0.length; i++) {
+            transiciones[i] = siguiente0[i];
+        }
+        for (i = i; i < transiciones.length; i++) {
+            transiciones[i] = siguiente1[i - siguiente0.length];
+        }
+        for (int j = 0; j < transiciones.length; j++) {
+            System.out.print(transiciones[j] + "  ||  ");
+        }
+
+        arreglo = automata.eliminaExtraños(arreglo, transiciones);
+        System.out.println("");
+        for (int j = 0; j < arreglo.size(); j++) {
+            System.out.println("Estado: " + arreglo.get(j).getNombre() + "==> Transición con 0: " + arreglo.get(j).getSiguiente0() + ""
+                    + "==> Transición con 1: " + arreglo.get(j).getSiguiente1() + "==> Valida: " + arreglo.get(j).getValida());
+        }
+
+    }//GEN-LAST:event_btnSimplificarActionPerformed
 
     /**
      * @param args the command line arguments
