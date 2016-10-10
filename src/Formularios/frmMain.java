@@ -1,25 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Formularios;
 
-import automatas.AFD;
+import automatas.Automata;
+import automatas.Estado;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 
-/**
- *
- * @author usuario
- */
 public class frmMain extends javax.swing.JFrame {
 
-    /**
-     * Creates new form frmMain
-     */
     public frmMain() {
         initComponents();
         getContentPane().setBackground(Color.LIGHT_GRAY);
@@ -37,7 +32,11 @@ public class frmMain extends javax.swing.JFrame {
     int valida[];
     automatas.Estado estado;
     ArrayList<automatas.Estado> arreglo = new ArrayList<automatas.Estado>();
-    automatas.AFD automata = new AFD();
+    ArrayList<String> estados;
+    ArrayList<Integer> aceptacion;
+    ArrayList<String> simbolos;
+    ArrayList<ArrayList<String>> transiciones;
+    automatas.Automata automata1;
 
     public void guardarEnMatriz() {
         int i = 0;
@@ -47,6 +46,77 @@ public class frmMain extends javax.swing.JFrame {
                 matriz[i][j] = (String) jTable1.getValueAt(i, j);
             }
         }
+    }
+
+    public void modificarTabla(String[][] matriz) {
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+                matriz,
+                new String[]{
+                    "ESTADO", "TRANSICIÓN 0", "TRANCISIÓN 1", "VALIDACIÓN"
+                }
+        ));
+    }
+
+    public String[][] crearMatriz(ArrayList<String> estados, ArrayList<Integer> aceptacion, ArrayList<ArrayList<String>> transiciones) {
+        String[][] matriz = new String[estados.size()][4];
+        for (int i = 0; i < estados.size(); i++) {
+            matriz[i][0] = estados.get(i);
+            matriz[i][1] = transiciones.get(i).get(0);
+            matriz[i][2] = transiciones.get(i).get(1);
+            matriz[i][3] = aceptacion.get(i).toString();
+        }
+        return matriz;
+    }
+
+    public boolean buscar(String a, String[] v) {
+        boolean encontrado = false;
+        for (int i = 0; i < v.length; i++) {
+            if (a.equalsIgnoreCase(v[i])) {
+                encontrado = true;
+                return encontrado;
+            }
+        }
+        return encontrado;
+    }
+
+    public boolean revisaValida(int[] vector) {
+        boolean acepta = true;
+        for (int i = 0; i < vector.length; i++) {
+            if ((vector[i] != 0) && (vector[i] != 1)) {
+                acepta = false;
+                JOptionPane.showMessageDialog(null, "Debe ingresar 0 o 1 en la colúmna de validación."
+                        + "\nError con: " + vector[i] + " en fila " + i + " columna 3", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return acepta;
+    }
+
+    public boolean revisaTrancisiones0(String[] vector1, String[] vector2) {
+        boolean acepta = false;
+        for (int j = 0; j < vector2.length; j++) {
+            if (buscar(vector1[j], vector2) == true) {
+                acepta = true;
+                return acepta;
+            } else {
+                JOptionPane.showMessageDialog(null, "La transición debe hacerse hacia uno de los estados."
+                        + "\nError con: " + vector1[j] + " en fila " + j + " columna 1", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return acepta;
+    }
+
+    public boolean revisaTrancisiones1(String[] vector1, String[] vector2) {
+        boolean acepta = false;
+        for (int j = 0; j < vector1.length; j++) {
+            if (buscar(vector1[j], vector2) == true) {
+                acepta = true;
+                return acepta;
+            } else {
+                JOptionPane.showMessageDialog(null, "La transición debe hacerse hacia uno de los estados."
+                        + "\nError con: " + vector1[j] + " en fila " + j + " columna 1", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return acepta;
     }
 
     /**
@@ -321,7 +391,7 @@ public class frmMain extends javax.swing.JFrame {
             valida = new int[nroEstados];
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(rootPane, "Error al ingresar el dato datos: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "Error al ingresar el dato: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCrearActionPerformed
 
@@ -335,31 +405,57 @@ public class frmMain extends javax.swing.JFrame {
                 valida[i] = Integer.parseInt(matriz[i][3]);
             }
         }
-        boolean acepta1 = automata.revisaTrancisiones0(nombres, siguiente0);
-        boolean acepta2 = automata.revisaTrancisiones1(nombres, siguiente1);
-        boolean acepta3 = automata.revisaValida(valida);
+        boolean acepta1 = revisaTrancisiones0(siguiente0, nombres);
+        boolean acepta2 = revisaTrancisiones1(siguiente1, nombres);
+        boolean acepta3 = revisaValida(valida);
 
         if ((acepta1 == true) && (acepta2 == true) && (acepta3 == true)) {
             String datos = "";
+            estados = new ArrayList<>();
+            aceptacion = new ArrayList<>();
+            ArrayList<String> transicion;
+            simbolos = new ArrayList<>();
+            transiciones = new ArrayList<>();
             for (int i = 0; i < matriz.length; i++) {
-                estado = new automatas.Estado(matriz[i][0], matriz[i][1], matriz[i][2], Integer.parseInt(matriz[i][3]));
-                arreglo.add(estado);
-                jTextArea1.setText(automata.mostrar(arreglo, datos));
+                estados.add(matriz[i][0]);
+                aceptacion.add(Integer.parseInt(matriz[i][3]));
+                transicion = new ArrayList<>();
+                transicion.add(matriz[i][1]);
+                transicion.add(matriz[i][2]);
+                transiciones.add(transicion);
             }
+            simbolos.add("0");
+            simbolos.add("1");
+            automata1 = new Automata(estados, simbolos, aceptacion, transiciones);
+            String tipo = automata1.tipoAutomata();
+            if (tipo.equals("AFND")) {
+                automata1.pasarAFDerterministico();
+                estados = automata1.getEstadosNuevos();
+                aceptacion = automata1.getValidaNuevos();
+                transiciones = automata1.getTransicionesNuevas();
+                jTextArea1.setText("AUTÓMATA FINITO NO DETERMINÍSTICO\n" + automata1.mostrarAutomata() + "\n");
+                matriz = crearMatriz(estados, aceptacion, transiciones);
+                modificarTabla(matriz);
+                automata1 = new Automata(estados, simbolos, aceptacion, transiciones);
+            }
+            jTextArea1.setText(jTextArea1.getText() + "AUTÓMATA FINITO DETERMINÍSTICO\n" + automata1.mostrarAutomata());
+            btnCrear.setEnabled(false);
             btnGuardar.setEnabled(false);
+            btnSimplificar.setEnabled(true);
         } else {
             JOptionPane.showMessageDialog(rootPane, "Debe revisar los datos ingresados", "ERROR", JOptionPane.INFORMATION_MESSAGE);
         }
-        btnVerificar.setEnabled(true);
-        btnSimplificar.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpActionPerformed
-        frmHelp help = new frmHelp();
-        help.setVisible(true);
-        help.setTitle("AYUDA");
-        help.setResizable(false);
-        help.setLocationRelativeTo(null);
+        try {
+            File path = new File("../Automatas\\src\\Formularios\\ayuda.pdf");
+            Desktop.getDesktop().open(path);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(rootPane, "Error al abrir archivo" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnHelpActionPerformed
 
     private void btnRestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaurarActionPerformed
@@ -373,21 +469,21 @@ public class frmMain extends javax.swing.JFrame {
             }
             jTable1.setEnabled(false);
             btnGuardar.setEnabled(false);
-            jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                    matriz,
-                    new String[]{
-                        "ESTADO", "TRANSICIÓN 0", "TRANCISIÓN 1", "VALIDACIÓN"
-                    }
-            ));
-            for (int i = 0; i < arreglo.size(); i++) {
-                arreglo.clear();
-            }
+            btnCrear.setEnabled(true);
+            btnVerificar.setEnabled(false);
+            modificarTabla(matriz);
             for (int i = 0; i < nombres.length; i++) {
                 nombres[i] = null;
                 siguiente0[i] = null;
                 siguiente1[i] = null;
                 valida[i] = 0;
             }
+            estados.clear();
+            transiciones.clear();
+            aceptacion.clear();
+            transiciones.clear();
+            simbolos.clear();
+            arreglo.clear();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Error " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -408,7 +504,16 @@ public class frmMain extends javax.swing.JFrame {
                     return;
                 }
             }
-            Object[] retorno = automata.validarCadena(arreglo, vectorCadena);
+            for (int i = 0; i < estados.size(); i++) {
+                String nombre = estados.get(i);
+                String siguiente0 = transiciones.get(i).get(0);
+                String siguiente1 = transiciones.get(i).get(1);
+                int valida = aceptacion.get(i);
+                Estado estado = new Estado(nombre, siguiente0, siguiente1, valida);
+                arreglo.add(estado);
+            }
+
+            Object[] retorno = automata1.validarCadena(arreglo, vectorCadena);
             int k = Integer.parseInt(retorno[0].toString());
             if (k == 1) {
                 jTextArea2.setText("Hilera a evaluar: " + cadena + "\n\n"
@@ -426,31 +531,24 @@ public class frmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerificarActionPerformed
 
     private void btnSimplificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimplificarActionPerformed
-        System.out.println(nombres.length);
-        System.out.println(arreglo.size());
-        System.out.println(nroEstados);
-        String[] transiciones = new String[nroEstados * 2];
-        for (int i = 0; i < transiciones.length; i++) {
-            System.out.println(i);
-        }
-        int i;
-        for (i = 0; i < siguiente0.length; i++) {
-            transiciones[i] = siguiente0[i];
-        }
-        for (i = i; i < transiciones.length; i++) {
-            transiciones[i] = siguiente1[i - siguiente0.length];
-        }
-        for (int j = 0; j < transiciones.length; j++) {
-            System.out.print(transiciones[j] + "  ||  ");
-        }
+        if (!automata1.esVacio()) {
 
-        arreglo = automata.eliminaExtraños(arreglo, transiciones);
-        System.out.println("");
-        for (int j = 0; j < arreglo.size(); j++) {
-            System.out.println("Estado: " + arreglo.get(j).getNombre() + "==> Transición con 0: " + arreglo.get(j).getSiguiente0() + ""
-                    + "==> Transición con 1: " + arreglo.get(j).getSiguiente1() + "==> Valida: " + arreglo.get(j).getValida());
-        }
+            automata1.removerExtranos();
+            automata1.simplificarEquivalentes();
 
+            estados = automata1.getEstadosNuevos();
+            aceptacion = automata1.getValidaNuevos();
+            transiciones = automata1.getTransicionesNuevas();
+
+            jTextArea1.setText(jTextArea1.getText() + "\nAUTÓMATA SIMPLIFICADO\n" + automata1.mostrarAutomata());
+            matriz = crearMatriz(estados, aceptacion, transiciones);
+            modificarTabla(matriz);
+            btnVerificar.setEnabled(true);
+            btnSimplificar.setEnabled(false);
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Autómata vacío, no se puede simplificar", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSimplificarActionPerformed
 
     /**
@@ -458,6 +556,7 @@ public class frmMain extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
